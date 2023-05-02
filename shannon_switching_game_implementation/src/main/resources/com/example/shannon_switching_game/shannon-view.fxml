@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.paint.*?>
+<?import com.almasb.fxgl.app.scene.FXGLDefaultMenu.MenuBox?>
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="CENTER" spacing="20.0"
+         fx:controller="com.example.shannon_switching_game.ShannonController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <Label fx:id="welcomeText" text = "Shannon Switching Game"/>
+    <GridPane alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="80.0" prefWidth="80.0"/>
+            <ColumnConstraints hgrow="NEVER" minWidth="80.0" prefWidth="80.0"/>
+            <ColumnConstraints hgrow="NEVER" minWidth="80.0" prefWidth="80.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="80.0" prefHeight="80.0" vgrow="NEVER" valignment="TOP"/>
+            <RowConstraints minHeight="80.0" prefHeight="80.0" vgrow="NEVER" valignment="TOP"/>
+            <RowConstraints minHeight="80.0" prefHeight="80.0" vgrow="NEVER" valignment="TOP"/>
+        </rowConstraints>
+        <children>
+        <Button fx:id="button1" GridPane.columnIndex="0" onMouseClicked = "#onFirstButtonClick" style = "-fx-background-color: clear; -fx-text-fill: white; -fx-border-color: clear" GridPane.valignment="TOP" GridPane.halignment="LEFT"/>
+        <Button fx:id="button2" GridPane.columnIndex="2" onMouseClicked = "#onSecondButtonClick" style = "-fx-background-color: clear; -fx-text-fill: white; -fx-border-color: clear" GridPane.halignment="LEFT"/>
+        <Button fx:id="button3" GridPane.columnIndex="0" GridPane.rowIndex="2" onMouseClicked = "#onThirdButtonClick" style = "-fx-background-color: clear; -fx-text-fill: white; -fx-border-color: clear" GridPane.valignment="TOP"/>
+        <Button fx:id="button4" GridPane.columnIndex="2" GridPane.rowIndex="2" onMouseClicked = "#onFourthButtonClick" style = "-fx-background-color: clear; -fx-text-fill: white; -fx-border-color: clear" GridPane.halignment="LEFT" GridPane.valignment="TOP"/>
+        <Line fx:id = "line1to2" style = "-fx-stroke: white" GridPane.columnIndex="0" GridPane.valignment="TOP" GridPane.halignment="LEFT"/>
+        <Line fx:id = "line1to3" style = "-fx-stroke: white" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM"/>
+        <Line fx:id = "line1to4" style = "-fx-stroke: white" />
+        <Line fx:id = "line2to3" style = "-fx-stroke: white" GridPane.columnIndex="0"/>
+        <Line fx:id = "line2to4" style = "-fx-stroke: white" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+        <Line fx:id = "line3to4" style = "-fx-stroke: white" GridPane.rowIndex="2"/>
+    </children>
+    </GridPane>
+    <Button fx:id="startButton" onAction="#onStartButtonClick" text = "Start Game"/>
+</VBox>
+
