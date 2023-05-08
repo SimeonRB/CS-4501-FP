@@ -37,6 +37,6 @@
         <Line fx:id = "line3to4" style = "-fx-stroke: white" GridPane.rowIndex="2"/>
     </children>
     </GridPane>
+    <Label fx:id="startPlayer" text = "Get Ready!"/>
     <Button fx:id="startButton" onAction="#onStartButtonClick" text = "Start Game"/>
 </VBox>
-
