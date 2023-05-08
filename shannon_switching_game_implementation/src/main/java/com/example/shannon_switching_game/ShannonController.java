@@ -3,20 +3,17 @@ package com.example.shannon_switching_game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.*;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ShannonController {
     public Implementation playGame;
     @FXML
     private Label welcomeText;
     @FXML
-    private Button setNumPoints = new Button("Start Game");
-    @FXML
-    private TextField numPointsField;
+    private Label startPlayer;
     int numPoints = 0;
     @FXML
     Button button1 = new Button();
@@ -48,14 +45,13 @@ public class ShannonController {
     }
     @FXML
     protected void onStartButtonClick() {
-        if(welcomeText.getText().equals("Play again?")) {
-            playGame = new Implementation();
-        }
+        playGame = new Implementation();
         playGame.setNumPoints(4);
         numPlayerLines = playGame.getNumPlayerLines();
         numCutLines = playGame.getNumCutLines();
         numPoints = playGame.getNumPoints();
         playGame.setSpecial(numPoints);
+        startPlayer.setText("First Move: " + playGame.getPlayer());
         int r2 = playGame.getSpecial().get(1);
         for(int j = 1; j <= numPoints; j++) {
             if (j == 1) {
@@ -126,8 +122,8 @@ public class ShannonController {
             int buttonNumber = 1;
                 if (playGame.getPlayer().equals("Short")) {
                     button1.setStyle("-fx-background-color: #0000FF; ");
-                    playGame.addLine(buttonNumber);
-                    if (playGame.getNumPlayerLines() > numPlayerLines) {
+                    if (lastButtonPressed != 0 && lastButtonPressed != 1) {
+                        playGame.getPlayerLines().add(new ArrayList<>());
                         playGame.getPlayerLines().get(numPlayerLines).add(lastButtonPressed);
                         playGame.getPlayerLines().get(numPlayerLines).add(buttonNumber);
                         if(lastButtonPressed == 2) {
@@ -143,14 +139,16 @@ public class ShannonController {
                         }
                         button1.setStyle("-fx-background-color: #808080; ");
                         playGame.setPlayer("Cut");
-                        playGame.getPlayerLines().remove(numPlayerLines);
-                        playGame.clearLine();
+                        startPlayer.setText("Next Move: " + playGame.getPlayer());
+                        lastButtonPressed = 0;
                         numPlayerLines = playGame.getNumPlayerLines();
+                    } else {
+                        lastButtonPressed = 1;
                     }
                 } else if (playGame.getPlayer().equals("Cut")) {
                    button1.setStyle("-fx-background-color: #FF0000; ");
-                    playGame.deleteLine(buttonNumber);
-                    if (playGame.getNumCutLines() > numCutLines) {
+                    if (lastButtonPressed != 0 && lastButtonPressed != 1) {
+                        playGame.getCutLines().add(new ArrayList<>());
                         playGame.getCutLines().get(numCutLines).add(lastButtonPressed);
                         playGame.getCutLines().get(numCutLines).add(buttonNumber);
                         if(lastButtonPressed == 2) {
@@ -166,13 +164,14 @@ public class ShannonController {
                         }
                         button1.setStyle("-fx-background-color: #808080; ");
                         playGame.setPlayer("Short");
-                        playGame.getCutLines().remove(numCutLines);
-                        playGame.clearLine();
                         numCutLines = playGame.getNumCutLines();
+                        startPlayer.setText("Next Move: " + playGame.getPlayer());
+                        lastButtonPressed = 0;
+                    } else {
+                        lastButtonPressed = 1;
                     }
                 }
             }
-        lastButtonPressed = 1;
         gameStatus();
     }
     @FXML
@@ -181,8 +180,8 @@ public class ShannonController {
             int buttonNumber = 2;
             if (playGame.getPlayer().equals("Short")) {
                 button2.setStyle("-fx-background-color: #0000FF; ");
-                playGame.addLine(buttonNumber);;
-                if (playGame.getNumPlayerLines() > numPlayerLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 2) {
+                    playGame.getPlayerLines().add(new ArrayList<>());
                     playGame.getPlayerLines().get(numPlayerLines).add(lastButtonPressed);
                     playGame.getPlayerLines().get(numPlayerLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -198,14 +197,16 @@ public class ShannonController {
                     }
                     button2.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Cut");
-                    playGame.getPlayerLines().remove(numPlayerLines);
-                    playGame.clearLine();
+                    lastButtonPressed = 0;
                     numPlayerLines = playGame.getNumPlayerLines();
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
+                } else {
+                    lastButtonPressed = 2;
                 }
             } else if (playGame.getPlayer().equals("Cut")) {
                 button2.setStyle("-fx-background-color: #FF0000; ");
-                playGame.deleteLine(buttonNumber);
-                if (playGame.getNumCutLines() > numCutLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 2) {
+                    playGame.getCutLines().add(new ArrayList<>());
                     playGame.getCutLines().get(numCutLines).add(lastButtonPressed);
                     playGame.getCutLines().get(numCutLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -221,12 +222,13 @@ public class ShannonController {
                     }
                     button2.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Short");
-                    playGame.getCutLines().remove(numCutLines);
-                    playGame.clearLine();
                     numCutLines = playGame.getNumCutLines();
+                    lastButtonPressed = 0;
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
+                } else {
+                    lastButtonPressed = 2;
                 }
             }
-            lastButtonPressed = 2;
             gameStatus();
         }
     }
@@ -236,8 +238,8 @@ public class ShannonController {
             int buttonNumber = 3;
             if (playGame.getPlayer().equals("Short")) {
                 button3.setStyle("-fx-background-color: #0000FF; ");
-                playGame.addLine(buttonNumber);
-                if (playGame.getNumPlayerLines() > numPlayerLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 3) {
+                    playGame.getPlayerLines().add(new ArrayList<>());
                     playGame.getPlayerLines().get(numPlayerLines).add(lastButtonPressed);
                     playGame.getPlayerLines().get(numPlayerLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -253,14 +255,16 @@ public class ShannonController {
                     }
                     button3.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Cut");
-                    playGame.getPlayerLines().remove(numPlayerLines);
-                    playGame.clearLine();
                     numPlayerLines = playGame.getNumPlayerLines();
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
+                    lastButtonPressed = 0;
+                } else {
+                    lastButtonPressed = 3;
                 }
             } else if (playGame.getPlayer().equals("Cut")) {
                 button3.setStyle("-fx-background-color: #FF0000; ");
-                playGame.deleteLine(buttonNumber);
-                if (playGame.getNumCutLines() > numCutLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 3) {
+                    playGame.getCutLines().add(new ArrayList<>());
                     playGame.getCutLines().get(numCutLines).add(lastButtonPressed);
                     playGame.getCutLines().get(numCutLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -276,13 +280,14 @@ public class ShannonController {
                     }
                     button3.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Short");
-                    playGame.getCutLines().remove(numCutLines);
-                    playGame.clearLine();
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
                     numCutLines = playGame.getNumCutLines();
+                    lastButtonPressed = 0;
+                } else {
+                    lastButtonPressed = 3;
                 }
             }
         }
-        lastButtonPressed = 3;
         gameStatus();
     }
     @FXML
@@ -291,8 +296,8 @@ public class ShannonController {
             int buttonNumber = 4;
             if (playGame.getPlayer().equals("Short")) {
                 button4.setStyle("-fx-background-color: #0000FF; ");
-                playGame.addLine(buttonNumber);
-                if (playGame.getNumPlayerLines() > numPlayerLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 4) {
+                    playGame.getPlayerLines().add(new ArrayList<>());
                     playGame.getPlayerLines().get(numPlayerLines).add(lastButtonPressed);
                     playGame.getPlayerLines().get(numPlayerLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -308,14 +313,16 @@ public class ShannonController {
                     }
                     button4.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Cut");
-                    playGame.getPlayerLines().remove(numPlayerLines);
-                    playGame.clearLine();
                     numPlayerLines = playGame.getNumPlayerLines();
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
+                    lastButtonPressed = 0;
+                } else {
+                    lastButtonPressed = 4;
                 }
             } else if (playGame.getPlayer().equals("Cut")) {
                 button4.setStyle("-fx-background-color: #FF0000; ");
-                playGame.deleteLine(buttonNumber);
-                if (playGame.getNumCutLines() > numCutLines) {
+                if (lastButtonPressed != 0 && lastButtonPressed != 4) {
+                    playGame.getCutLines().add(new ArrayList<>());
                     playGame.getCutLines().get(numCutLines).add(lastButtonPressed);
                     playGame.getCutLines().get(numCutLines).add(buttonNumber);
                     if(lastButtonPressed == 1) {
@@ -330,18 +337,26 @@ public class ShannonController {
                     }
                     button4.setStyle("-fx-background-color: #808080; ");
                     playGame.setPlayer("Short");
-                    playGame.getCutLines().remove(numCutLines);
-                    playGame.clearLine();
                     numCutLines = playGame.getNumCutLines();
+                    startPlayer.setText("Next Move: " + playGame.getPlayer());
+                    lastButtonPressed = 0;
+                } else {
+                    lastButtonPressed = 4;
                 }
             }
         }
-        lastButtonPressed = 4;
         gameStatus();
     }
     @FXML
     protected void gameStatus() {
         playGame.checkWin();
+        if(line1to2.getStroke().equals(Color.WHITE) || line1to3.getStroke().equals(Color.WHITE) || line1to4.getStroke().equals(Color.WHITE) || line2to3.getStroke().equals(Color.WHITE) || line2to4.getStroke().equals(Color.WHITE) || line3to4.getStroke().equals(Color.WHITE)) {
+        } else {
+            if(!playGame.haveWon()){
+                playGame.setHaveWon(false);
+                playGame.setOver(true);
+            }
+        }
         if (playGame.isOver()) {
             if(playGame.haveWon()) {
                 welcomeText.setText("YOU WIN!");
