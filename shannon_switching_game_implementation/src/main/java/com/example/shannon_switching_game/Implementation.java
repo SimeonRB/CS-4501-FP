@@ -59,7 +59,8 @@ public class Implementation {
             System.exit(1);
         }
         this.cutLines = new ArrayList<>();
-        this.player = "Short";
+        chooseRandomPlayer();
+        this.player = getPlayer();
         this.isOver = false;
         this.haveWon = false;
         this.line = new ArrayList<>();
@@ -68,8 +69,10 @@ public class Implementation {
         this.numPoints = 0;
         this.playerLines = new ArrayList<>();
         this.cutLines = new ArrayList<>();
-        this.special = new ArrayList<>();
-        this.player = "Short";
+        setSpecial(4);
+        this.special = getSpecial();
+        chooseRandomPlayer();
+        this.player = getPlayer();
         this.isOver = false;
         this.haveWon = false;
         this.line = new ArrayList<>();
@@ -96,7 +99,8 @@ public class Implementation {
         return special;
     }
     public void setSpecial(int numPoints) {
-        if(this.special.size() == 0) {
+        if(this.special == null) {
+            this.special = new ArrayList<>();
             this.special.add(1);
             int special = 2 + (int) (Math.random()*(numPoints-1));
             this.special.add(special);
@@ -108,7 +112,7 @@ public class Implementation {
     public void addLine(Integer point) {
         if (line.size() == 0) {
             line.add(point);
-        } else if (line.size() == 1) {
+        } else  {
             if(line.get(0) != point){
                 line.add(point);
                 this.playerLines.add(line);
@@ -123,26 +127,29 @@ public class Implementation {
     public int getNumCutLines() {
         return cutLines.size();
     }
+    public List<Integer> getLine (){
+        return line;
+    }
     public void checkWin() {
         List<Integer> buffer = new ArrayList<>();
         int one = 0;
         int two = 0;
         int three = 0;
         int four = 0;
-        for(int i = 0; i < playerLines.size(); i++) {
-            if(playerLines.get(i).get(0) == special.get(0) && playerLines.get(i).get(1) == special.get(1)){
+        for (List<Integer> playerLine : playerLines) {
+            if (playerLine.get(0) == special.get(0) && playerLine.get(1) == special.get(1)) {
                 isOver = true;
                 haveWon = true;
                 break;
-            } else if(playerLines.get(i).get(1) == special.get(0) && playerLines.get(i).get(0) == special.get(1)){
+            } else if (playerLine.get(1) == special.get(0) && playerLine.get(0) == special.get(1)) {
                 isOver = true;
                 haveWon = true;
                 break;
             } else {
-                for(int j = 0; j < 2; j++) {
-                    buffer.add(playerLines.get(i).get(j));
+                for (int j = 0; j < 2; j++) {
+                    buffer.add(playerLine.get(j));
                 }
-                for(int k = 0; k < buffer.size(); k++) {
+                for (int k = 0; k < buffer.size(); k++) {
                     if (buffer.get(k) == 1) {
                         one++;
                     }
@@ -156,42 +163,42 @@ public class Implementation {
                         four++;
                     }
                 }
-                if(special.get(1) == 2) {
-                    if(one > 0 && two > 0) {
-                        if(three >= 2 || four >= 2) {
+                if (special.get(1) == 2) {
+                    if (one > 0 && two > 0) {
+                        if (three >= 2 || four >= 2) {
                             isOver = true;
                             haveWon = true;
                             break;
                         }
-                        if(three == 1 ^ four == 1) {
-                            isOver = true;
-                            haveWon = true;
-                            break;
-                        }
-                    }
-                }
-                if(special.get(1) == 3) {
-                    if(one > 0 && three > 0) {
-                        if(two >= 2 || four >= 2) {
-                            isOver = true;
-                            haveWon = true;
-                            break;
-                        }
-                        if(two == 1 ^ four == 1) {
+                        if (three == 1 ^ four == 1) {
                             isOver = true;
                             haveWon = true;
                             break;
                         }
                     }
                 }
-                if(special.get(1) == 4) {
-                    if(one > 0 && four > 0) {
-                        if(three >= 2 || two >= 2) {
+                if (special.get(1) == 3) {
+                    if (one > 0 && three > 0) {
+                        if (two >= 2 || four >= 2) {
                             isOver = true;
                             haveWon = true;
                             break;
                         }
-                        if(three == 1 ^ two == 1) {
+                        if (two == 1 ^ four == 1) {
+                            isOver = true;
+                            haveWon = true;
+                            break;
+                        }
+                    }
+                }
+                if (special.get(1) == 4) {
+                    if (one > 0 && four > 0) {
+                        if (three >= 2 || two >= 2) {
+                            isOver = true;
+                            haveWon = true;
+                            break;
+                        }
+                        if (three == 1 ^ two == 1) {
                             isOver = true;
                             haveWon = true;
                             break;
@@ -205,16 +212,16 @@ public class Implementation {
         List <Integer> specialTwo = new ArrayList<>();
         boolean addSpecialTwo = true;
         if (!isOver) {
-            for (int i = 0; i < cutLines.size(); i++) {
+            for (List<Integer> cutLine : cutLines) {
                 int connection = 0;
-                if(cutLines.get(i).get(0) != special.get(0) && cutLines.get(i).get(1) != special.get(1) && cutLines.get(i).get(0) != special.get(0) && cutLines.get(i).get(1) != special.get(1)){
+                if (cutLine.get(0) != special.get(0) && cutLine.get(1) != special.get(1) && cutLine.get(0) != special.get(0) && cutLine.get(1) != special.get(1)) {
                     continue;
                 } else {
-                    if (cutLines.get(i).get(0) == special.get(0) || cutLines.get(i).get(0) == special.get(1)) {
-                        connection = cutLines.get(i).get(1);
-                        if(cutLines.get(i).get(0) == special.get(0)) {
-                            for(int j = 0; j < specialTwo.size(); j++) {
-                                if(specialTwo.get(j) == connection) {
+                    if (cutLine.get(0) == special.get(0) || cutLine.get(0) == special.get(1)) {
+                        connection = cutLine.get(1);
+                        if (cutLine.get(0) == special.get(0)) {
+                            for (int j = 0; j < specialTwo.size(); j++) {
+                                if (specialTwo.get(j) == connection) {
                                     addSpecialTwo = false;
                                 }
                             }
@@ -227,8 +234,8 @@ public class Implementation {
                                 }
                             }
                         } else {
-                            for(int j = 0; j < specialOne.size(); j++) {
-                                if(specialOne.get(j) == connection) {
+                            for (int j = 0; j < specialOne.size(); j++) {
+                                if (specialOne.get(j) == connection) {
                                     addSpecialOne = false;
                                 }
                             }
@@ -241,11 +248,11 @@ public class Implementation {
                                 }
                             }
                         }
-                    } else if (cutLines.get(i).get(1) == special.get(0) || cutLines.get(i).get(1) == special.get(1)) {
-                        connection = cutLines.get(i).get(0);
-                        if(cutLines.get(i).get(1) == special.get(0)) {
-                            for(int j = 0; j < specialTwo.size(); j++) {
-                                if(specialTwo.get(j) == connection) {
+                    } else if (cutLine.get(1) == special.get(0) || cutLine.get(1) == special.get(1)) {
+                        connection = cutLine.get(0);
+                        if (cutLine.get(1) == special.get(0)) {
+                            for (int j = 0; j < specialTwo.size(); j++) {
+                                if (specialTwo.get(j) == connection) {
                                     addSpecialTwo = false;
                                 }
                             }
@@ -260,8 +267,8 @@ public class Implementation {
                                 addSpecialTwo = true;
                             }
                         } else {
-                            for(int j = 0; j < specialOne.size(); j++) {
-                                if(specialOne.get(j) == connection) {
+                            for (int j = 0; j < specialOne.size(); j++) {
+                                if (specialOne.get(j) == connection) {
                                     addSpecialOne = false;
                                 }
                             }
@@ -277,7 +284,7 @@ public class Implementation {
                             }
                         }
                     } else {
-                        if (cutLines.get(i).get(0) == special.get(0)) {
+                        if (cutLine.get(0) == special.get(0)) {
                             for (int j = 0; j < specialTwo.size(); j++) {
                                 if (specialTwo.get(j) == special.get(0)) {
                                     addSpecialTwo = false;
@@ -354,27 +361,36 @@ public class Implementation {
     public String getPlayer() {
         return player;
     }
-    public void clearLine() {
-        if(player.equals("Cut")) {
-            playerLines.add(line);
-        }
-        if(player.equals("Short")) {
-            cutLines.add(line);
-        }
-        line.clear();
-    }
+
     public void setPlayer(String player) {
         this.player = player;
     }
-    public void deleteLine(int point){
+    public void deleteLine(int point) {
         if (line.size() == 0) {
             line.add(point);
-        } else if (line.size() >= 1) {
+        } else {
             if(line.get(0) != point){
+                line.add(point);
                 cutLines.add(line);
                 setCutLines(cutLines);
                 line.clear();
             }
         }
+    }
+    public void chooseRandomPlayer(){
+        int choosePlayer = (int) Math.round(Math.random() + 1);
+        if (choosePlayer == 1) {
+            setPlayer("Cut");
+        } else {
+            setPlayer("Short");
+        }
+    }
+
+    public void setHaveWon(boolean haveWon) {
+        this.haveWon = haveWon;
+    }
+
+    public void setOver(boolean over) {
+        isOver = over;
     }
 }
